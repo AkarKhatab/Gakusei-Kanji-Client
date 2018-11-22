@@ -41,7 +41,7 @@ public class ShellService {
                 "E.g. 'get KLL_01'\n");
     }
 
-    @ShellMethod(value = "Provide an answer to a question.", key = "answer")
+    @ShellMethod(value = "Provide an answer to a question. \n\t\t\t@Param 'yes', 'no' or 'vetej'", key = "answer")
     public void answer(@ShellOption String answer){
         if(answer.equals("yes") || answer.equals("no") || answer.equals("vetej")){
             ResponseEntity responseEntity = kanjiService.sendAnswer(answer, currentQuestion);
