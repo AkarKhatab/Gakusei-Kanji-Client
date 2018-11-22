@@ -1,7 +1,5 @@
 package se.kits.gakusei.kanjiclient.dto;
 
-import java.sql.Timestamp;
-
 public class KanjiDrawingDTO {
     private String data;
     private String difficulty;
