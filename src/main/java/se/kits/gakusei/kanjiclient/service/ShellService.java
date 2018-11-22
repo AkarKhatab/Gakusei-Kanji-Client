@@ -45,8 +45,13 @@ public class ShellService {
     public void answer(@ShellOption String answer){
         if(answer.equals("yes") || answer.equals("no") || answer.equals("vetej")){
             ResponseEntity responseEntity = kanjiService.sendAnswer(answer, currentQuestion);
-            System.out.println("Server response: " + responseEntity.getStatusCode());
-            System.out.println("Answer submitted.\n");
+            if(responseEntity.getStatusCode().is2xxSuccessful()){
+                System.out.println("Server response: " + responseEntity.getStatusCode());
+                System.out.println("Answer submitted.\n");
+            }else{
+                System.out.println("Server response: " + responseEntity.getStatusCode());
+                System.out.println("Something went wrong. Please try again.\n");
+            }
             answerRequired = false;
         }else{
             System.out.println("Answer is not valid. Please answer with 'yes', 'no' or 'vetej'.\n");
