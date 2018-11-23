@@ -19,7 +19,12 @@ public class ShellService {
     @Autowired
     KanjiService kanjiService;
 
-    @ShellMethod(value = "Get a random question from selected lesson.\n\t\t\t@Param Lesson name.", key = "get")
+    /**
+     * Gets a random question from the selected lesson and prints the question.
+     *
+     * @param lessonName Name of the lesson to get the question from.
+     * */
+    @ShellMethod(value = "Get a random question from the selected lesson.\n\t\t\t@Param Lesson name.", key = "get")
     public void getQuestion(@ShellOption String lessonName) {
 
         if(kanjiService.isLesson(lessonName)){
@@ -33,6 +38,9 @@ public class ShellService {
         }
     }
 
+    /**
+     * Prints a list of all available lessons.
+     */
     @ShellMethod(value = "Get a list of all available lessons.", key = "lessons")
     public void getAllLessons(){
         kanjiService.printLessons();
@@ -41,10 +49,15 @@ public class ShellService {
                 "E.g. 'get KLL_01'\n");
     }
 
+    /**
+     * Checks if the user's answer is valid and sends it to the gakusei application.
+     *
+     * @param answer The user's answer.
+     */
     @ShellMethod(value = "Provide an answer to a question. \n\t\t\t@Param 'yes', 'no' or 'vetej'", key = "answer")
     public void answer(@ShellOption String answer){
         if(answer.equals("yes") || answer.equals("no") || answer.equals("vetej")){
-            ResponseEntity responseEntity = kanjiService.sendAnswer(answer, currentQuestion);
+            ResponseEntity responseEntity = kanjiService.sendAnswer(answer);
             if(responseEntity.getStatusCode().is2xxSuccessful()){
                 System.out.println("Server response: " + responseEntity.getStatusCode());
                 System.out.println("Answer submitted.\n");
@@ -58,17 +71,30 @@ public class ShellService {
         }
     }
 
+    /**
+     * Aborts the ongoing question.
+     */
     @ShellMethod(value = "Aborts the ongoing question.", key = "abort")
     public void abort(){
         System.out.println("Question aborted.\n");
         answerRequired = false;
     }
 
+    /**
+     * Checks the availability of the answer command.
+     *
+     * @return Returns true or false depending on the availability.
+     */
     public Availability answerAvailability(){
         return answerRequired ? Availability.available()
                 : Availability.unavailable("no question has been asked.");
     }
 
+    /**
+     * Checks the availability of the get command.
+     *
+     * @return Returns true or false depending on the availability.
+     */
     public Availability getQuestionAvailability(){
         return answerRequired ?
                 Availability.unavailable("a question has been asked. \nProvide an answer before proceeding " +
@@ -76,13 +102,23 @@ public class ShellService {
                 : Availability.available();
     }
 
+    /**
+     * Checks the availability of the lessons command.
+     *
+     * @return Returns true or false depending on the availability.
+     */
     public Availability getAllLessonsAvailability(){
         return answerRequired ?
                 Availability.unavailable("a question has been asked. \nProvide an answer before proceeding " +
-                        "of use the command 'abort' if you do not wish to answer.")
+                        "or use the command 'abort' if you do not wish to answer.")
                 : Availability.available();
     }
 
+    /**
+     * Checks the availability of the abort command.
+     *
+     * @return Returns true or false depending on the availability.
+     */
     public Availability abortAvailability(){
         return answerRequired ? Availability.available()
                 : Availability.unavailable("there is no question to abort.");

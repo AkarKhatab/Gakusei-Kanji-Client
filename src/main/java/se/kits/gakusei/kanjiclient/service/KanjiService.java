@@ -27,7 +27,12 @@ public class KanjiService {
         getAllLessons();
     }
 
-    /*Gets 5 random question from the given lesson and returns the first in the list*/
+    /**
+     * Gets 5 random questions from the given lesson and returns the first in the list.
+     *
+     * @param lessonName Name of the lesson to get questions from.
+     * @return Returns the first question from the received list.
+     * */
     public String getQuestion(String lessonName){
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(
@@ -43,7 +48,9 @@ public class KanjiService {
         return null;
     }
 
-    /*Gets all lessons and adds them to an arraylist.*/
+    /**
+     * Gets all lessons and adds them to an arraylist.
+     * */
     private void getAllLessons(){
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(
                 REST_SERVICE_URI+"/lessons?lessonType=kanji", String.class);
@@ -56,7 +63,13 @@ public class KanjiService {
         }
     }
 
-    public ResponseEntity<?> sendAnswer(String answer, String question){
+    /**
+     * Sends back the user answer back to the gakusei application.
+     *
+     * @param answer The users answer.
+     * @return Returns the responseEntity.
+     * */
+    public ResponseEntity<?> sendAnswer(String answer){
         KanjiDrawingDTO kanjiDrawingDTO = new KanjiDrawingDTO();
         kanjiDrawingDTO.setDifficulty("easy");
         kanjiDrawingDTO.setNuggetid(currentQuestionId);
@@ -71,20 +84,34 @@ public class KanjiService {
         headers.add("Content-Type", "application/json");
         HttpEntity<KanjiDrawingDTO> request = new HttpEntity<KanjiDrawingDTO>(kanjiDrawingDTO, headers);
 
-        ResponseEntity<?> responseEntity= restTemplate.postForEntity(REST_SERVICE_URI+"/kanji-drawings",
+        return restTemplate.postForEntity(REST_SERVICE_URI+"/kanji-drawings",
                 request, boolean.class);
-        return responseEntity;
 
     }
 
+    /**
+     * Checks if the lesson exists.
+     *
+     * @param lessonName The name of the lesson to be checked.
+     * @return Returns true or false depending on the lessons existence.
+     * */
     public boolean isLesson(String lessonName){
         return lessons.contains(lessonName);
     }
 
+    /**
+     * Prints all the lesson names.
+     * */
     public void printLessons() {
         lessons.forEach(System.out::println);
     }
 
+    /**
+     * Formats the question to be ready for printing and sets currentQuestionId.
+     *
+     * @param question The question to be formatted.
+     * @return Returns a formatted string of the given question.
+     * */
     private String formatQuestion(String question){
         currentQuestionId = question.substring(question.indexOf("\":\"")+3, question.indexOf("\",\""));
         return "Kanji nugget id: " + currentQuestionId
