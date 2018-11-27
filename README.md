@@ -1,6 +1,6 @@
 # Gakusei-Kanji-Client
 A simple client to demonstrate usage of the kanji api of the gakusei project.
-*This application is merely a demonstration of the `kanji API` of the gakusei project. In order to make a complete application that can keep track of the user and persist the data, more APIs need to be used. Below is a walkthrough of the necessary steps to build a complete kanji application.*
+*This application is merely a demonstration of the `[kanji-controller](https://staging.daigaku.se/swagger-ui.html#/kanji-controller)/[kanji-drawing-controller](https://staging.daigaku.se/swagger-ui.html#/kanji-drawing-controller) API` of the gakusei project. In order to make a complete application that can keep track of the user and persist the data, more APIs need to be used. Below is a walkthrough of the necessary steps to build a complete kanji application.*
 
 ### How to make a complete kanji application
 
