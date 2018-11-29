@@ -133,20 +133,17 @@ public class KanjiService {
     }
 
     /**
-     *
+     *Open the the url of the SVG file in a browser.
      */
     public void showSVG(){
         String hexSign = Integer.toString(currentQuestionSign.codePointAt(0), 16);
         String svg = ("https://staging.daigaku.se/img/kanji/kanjivg/0"+hexSign+".svg");
-
-        String url = "http://www.google.com";
 
         if(Desktop.isDesktopSupported()){
             Desktop desktop = Desktop.getDesktop();
             try {
                 desktop.browse(new URI(svg));
             } catch (IOException | URISyntaxException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }else{
@@ -154,14 +151,13 @@ public class KanjiService {
             try {
                 runtime.exec("open " + svg);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
     /**
-     *
+     *Reads the SVG file from the url and prints it to the terminal.
      */
     public void printSVG(){
         try{
