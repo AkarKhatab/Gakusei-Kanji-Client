@@ -31,7 +31,8 @@ public class ShellService {
             currentQuestion = kanjiService.getQuestion(lessonName.replace('_', ' '));
             System.out.println(currentQuestion);
             System.out.println("\nDid you answer correctly? Provide an answer using the command 'answer' followed" +
-                    " by 'yes', 'no' or 'vetej'.\n");
+                    " by 'yes', 'no' or 'vetej'.\nUse the command 'printSVG' to print the SVG for the question or " +
+                    "'showSVG' to show the SVG in a browser.");
             answerRequired = true;
         }else{
             System.out.println("The specified lesson does not exist or is unavailable.\n");
@@ -46,7 +47,7 @@ public class ShellService {
         kanjiService.printLessons();
         System.out.println("\nUse the above list of available lessons to fetch questions with the " +
                 "command 'get' followed by the name of lesson you want to fetch a random question from.\n" +
-                "E.g. 'get KLL_01'\n");
+                "E.g. 'get " + kanjiService.lessons.get(0) + "'\n");
     }
 
     /**
@@ -78,6 +79,22 @@ public class ShellService {
     public void abort(){
         System.out.println("Question aborted.\n");
         answerRequired = false;
+    }
+
+    /**
+     *Calls method showSVG() in kanjiService class.
+     */
+    @ShellMethod(value = "Show the kanji SVG in a browser.", key = "showSVG")
+    public void showSVG(){
+        kanjiService.showSVG();
+    }
+
+    /**
+     *Calls method printSVG() in kanjiService class.
+     */
+    @ShellMethod(value = "Print the kanji SVG in the terminal.", key = "printSVG")
+    public void printSVG(){
+        kanjiService.printSVG();
     }
 
     /**
@@ -122,5 +139,25 @@ public class ShellService {
     public Availability abortAvailability(){
         return answerRequired ? Availability.available()
                 : Availability.unavailable("there is no question to abort.");
+    }
+
+    /**
+     *Checks the availability of the printSVG command.
+     *
+     *@return Returns true or false depending on the availability.
+     */
+    public Availability printSVGAvailability(){
+        return answerRequired ? Availability.available()
+                : Availability.unavailable("there is no SVG available to print.");
+    }
+
+    /**
+     *Checks the availability of the showSVG command.
+     *
+     *@return Returns true or false depending on the availability.
+     */
+    public Availability showSVGAvailability(){
+        return answerRequired ? Availability.available()
+                : Availability.unavailable("there is no SVG available to show.");
     }
 }
